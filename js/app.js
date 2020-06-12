@@ -23,6 +23,12 @@
 			todos,
 			currentediting:null
 		},
+		computed:{
+			remaningConut(){
+				return this.todos.filter(t => !t.completed).length
+			}
+
+		},
 		methods:{
 
 			handleNewTodoKeyDown(e){
@@ -52,7 +58,31 @@
 
 			handleGetEditingDblclick(item){
 				 this.currentediting = item
+			},
+			handleSaveEditKeydown (todo, index, e) {
+			// 0. 注册绑定事件处理函数
+			// 1. 获取编辑文本框的数据
+			// 2. 数据校验
+			//    如果数据是空的，则直接删除该元素
+			//    否则保存编辑
+			const target = e.target
+			const value = target.value.trim()
+
+			// 数据被编辑为空的了，直接删除
+			if (!value.length) {
+			this.todos.splice(index, 1)
+			} else {
+			todo.title = value
+			this.currentediting = null
 			}
+			},
+			handleCancelEditEsc(){
+				this.currentediting = null
+			},
+			handleClearAllDoneClick(){
+				return this.todos = this.todos.filter(t => !t.completed)
+			}
+
 		}
 	})
 })()
